@@ -77,22 +77,22 @@ io.on('connection', (socket) => {
         })
 
     })
-    socket.on('sendVideoURL', (videoURL, room_id, callback) => {
-        const user = getUser(socket.id);
-        const msgToStore = {
-            name: user.name,
-            user_id: user.user_id,
-            room_id,
-            url: videoURL
-        }
-        console.log('videourl', videoURLToStore)
-        const videourl = new VideoURL(videoURLToStore);
-        videourl.save().then(result => {
-            io.to(room_id).emit('videourl', result);
-            callback()
-        })
+    // socket.on('sendVideoURL', (videoURL, room_id, callback) => {
+    //     const user = getUser(socket.id);
+    //     const msgToStore = {
+    //         name: user.name,
+    //         user_id: user.user_id,
+    //         room_id,
+    //         url: videoURL
+    //     }
+    //     console.log('videourl', videoURLToStore)
+    //     const videourl = new VideoURL(videoURLToStore);
+    //     videourl.save().then(result => {
+    //         io.to(room_id).emit('videourl', result);
+    //         callback()
+    //     })
 
-    })
+    // })
     socket.on('get-messages-history', room_id => {
         Message.find({ room_id }).then(result => {
             socket.emit('output-messages', result)

@@ -1,6 +1,6 @@
 import React from 'react';
 import './Input.css';
-const Input = ({ message, setMessage, sendMessage, videoURL, setVideoURL, sendVideoURL }) => {
+const Input = ({ message, setMessage, sendMessage }) => {
     return (
         <div>
             <form action="" onSubmit={sendMessage} className="form">
@@ -13,7 +13,7 @@ const Input = ({ message, setMessage, sendMessage, videoURL, setVideoURL, sendVi
             <button className="sendButton">Send Message</button>
         </form>
 
-        <form action="" onSubmit={sendVideoURL} className="form">
+        {/* <form action="" onSubmit={sendVideoURL} className="form">
             <input type="text" className="input"
                 placeholder="Enter a video url"
                 value={videoURL}
@@ -22,7 +22,7 @@ const Input = ({ message, setMessage, sendMessage, videoURL, setVideoURL, sendVi
             />
             <button className="sendButton">Watch Lecture</button>
 
-        </form>
+        </form> */}
 
         </div>
         
