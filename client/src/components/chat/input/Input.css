@@ -1,28 +1,57 @@
 .form {
-    display: flex;
-    border-top: 2px solid #D3D3D3;
-    background-color: #FAFAFA;
-  }
-  
-  .input {
-    border: none;
-    border-radius: 0;
-    padding: 5%;
-    width: 80%;
-    font-size: 1.2em;
-  }
-  
-  input:focus, textarea:focus, select:focus{
-    outline: none;
-  }
-  
-  .sendButton {
-    color: #fff !important;
-    text-transform: uppercase;
-    text-decoration: none;
-    background: #2979FF;
-    padding: 20px;
-    display: inline-block;
-    border: none;
-    width: 20%;
-  }
+  display: flex;
+  border: none;
+  background-color: #aed581;
+}
+
+.message {
+  margin: 10px 10px 10px 10px;
+  display: flex;
+  justify-content: start;
+  border: solid green !important;
+  border-radius: 20px !important ;
+  width: 75%;
+  padding: 10px;
+}
+.input {
+  border: none;
+  color: #33691e;
+  font-size: 1.2em;
+  padding-left: 10px;
+  outline: none;
+  overflow: hidden;
+}
+.input::placeholder {
+  color: #33691e;
+
+}
+.share-video {
+  color: #fff !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #33691e;
+  padding: 20px;
+  display: inline-block;
+  border: none;
+  width: fit-content;
+  margin: 10px 10px 10px 10px;
+  border-radius: 20px;
+}
+
+.sendButton {
+  color: #33691e !important;
+  font-weight: bold;
+  margin: 10px 10px 10px 10px;
+}
+.sendButton:hover{
+  cursor: pointer;
+}
+.share-video:hover {
+  background: #689f38;
+}
+.sendButton::after {
+  background: #33691e;
+}
+.share-video::after {
+  background: #33691e;
+}
