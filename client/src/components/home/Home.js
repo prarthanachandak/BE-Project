@@ -8,7 +8,9 @@ const Home = () => {
     const { user, setUser } = useContext(UserContext);
     const [room, setRoom] = useState('');
     const [rooms, setRooms] = useState([]);
-    const ENDPT = 'localhost:5000';
+    const [link, setLink] = useState([]);
+    const[age, setAge] = useState([]);
+    const ENDPT = '127.0.0.1:5000';
     useEffect(() => {
         socket = io(ENDPT);
         return () => {
@@ -33,12 +35,12 @@ const Home = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        socket.emit('create-room', room);
-        console.log(room);
+        socket.emit('create-room',room,link);
+        console.log(room,link);
         setRoom('');
-
+        setLink('');
+        setAge('');
     }
-
     if (!user) {
         return <Redirect to='/login' />
     }
@@ -52,16 +54,22 @@ const Home = () => {
                             <form onSubmit={handleSubmit}>
                                 <div className="row">
                                     <div className="input-field col s12">
+                                    <label htmlFor="room">Room</label>
                                         <input
-                                            placeholder="Enter a room name"
+                                            placeholder="Enter a Study Room name"
                                             id="room" type="text" className="validate"
                                             value={room}
                                             onChange={e => setRoom(e.target.value)}
                                         />
-                                        <label htmlFor="room">Room</label>
+                                        <input
+                                            placeholder="Enter lecture link"
+                                            id="link" type="text" className="validate"
+                                            value={link}
+                                            onChange={e => setLink(e.target.value)}
+                                        />
                                     </div>
                                 </div>
-                                <button className="btn">Create Room</button>
+                                <button className="btn">Create Study Room</button>
                             </form>
                         </div>
                         <div className="card-action">

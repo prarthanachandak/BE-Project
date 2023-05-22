@@ -17,11 +17,15 @@ const Signup = () => {
         setPasswordError('');
         console.log(name, email, password)
         try {
-            const res = await fetch('http://localhost:5000/signup', {
+            let headers =await new Headers();
+            headers.append('Access-Control-Allow-Origin', 'http://127.0.0.1:5000');
+            headers.append('Access-Control-Allow-Credentials', 'true');
+            headers.append('Content-Type', 'application/json');
+            const res = await fetch('http://127.0.0.1:5000/signup', {
                 method: 'POST',
                 credentials: 'include',
                 body: JSON.stringify({ name, email, password }),
-                headers: { 'Content-Type': 'application/json' }
+                headers:headers,
             });
             const data = await res.json();
             console.log(data)
