@@ -8,8 +8,8 @@ const createJWT = id => {
 }
 const alertError = (err) => {
     let errors = { name: '', email: '', password: '' }
-    console.log('err message', err.message);
-    console.log('err code', err.code);
+    // console.log('err message', err.message);
+    // console.log('err code', err.code);
     if (err.message === 'incorrect email') {
         errors.email = 'This email not found';
     }
@@ -58,7 +58,6 @@ module.exports.verifyuser = (req, res, next) => {
     const token = req.cookies.jwt;
     if (token) {
         jwt.verify(token, 'chatroom secret', async (err, decodedToken) => {
-            console.log('decoded token', decodedToken)
             if (err) {
                 console.log(err.message)
             } else {

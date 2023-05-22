@@ -12,6 +12,8 @@ const Input = ({ message, setMessage, sendMessage }) => {
       <form action="#" className="form">
         <button className="share-video" onClick={null}>Read Book</button>
         <button className="share-video" onClick={null}>Watch Lecture</button>
+        {/* <button className="share-video" onClick={null}>Read Book</button>
+        <button className="share-video" onClick={null}>Watch Lecture</button> */}
         <div className="message">
           <textarea
             type="text"
@@ -27,17 +29,6 @@ const Input = ({ message, setMessage, sendMessage }) => {
           </span>
         </div>
       </form>
-
-      {/* <form action="" onSubmit={sendVideoURL} className="form">
-            <input type="text" className="input"
-                placeholder="Enter a video url"
-                value={videoURL}
-                onChange={event => setVideoURL(event.target.value)}
-                onKeyPress={event => event.key === 'Enter' ? sendVideoURL(event) : null}
-            />
-            <button className="sendButton">Watch Lecture</button>
-
-        </form> */}
     </div>
   );
 };

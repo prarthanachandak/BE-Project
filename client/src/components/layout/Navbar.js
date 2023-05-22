@@ -23,7 +23,7 @@ const Navbar = () => {
         <>
             <nav className="green">
                 <div className="nav-wrapper">
-                    <a href="/" className="brand-logo">Chat</a>
+                    <a href="/" className="brand-logo">Virtual Study Rooms</a>
                     <a href="#" data-target="mobile-demo" className="sidenav-trigger"><i className="material-icons">menu</i></a>
 
 

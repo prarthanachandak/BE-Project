@@ -23,7 +23,6 @@
 }
 .input::placeholder {
   color: #33691e;
-
 }
 .share-video {
   color: #fff !important;
@@ -37,7 +36,6 @@
   margin: 10px 10px 10px 10px;
   border-radius: 20px;
 }
-
 .sendButton {
   color: #33691e !important;
   font-weight: bold;
