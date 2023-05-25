@@ -9,9 +9,17 @@ const roomSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    age:{
+    pdflink: {
         type: String,
-        required: false
+        required: true
+    },
+    age:{
+        type: Number,
+        required: true
+    },
+    domain:{
+        type: String,
+        required: true
     }
 })
 const Room = mongoose.model('room', roomSchema);

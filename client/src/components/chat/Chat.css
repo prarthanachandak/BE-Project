@@ -17,6 +17,24 @@
   height: 70%;
   width: 50%;
 }
+
+.pdf-container {
+  transform-origin: bottom left;
+}
+
+
+/* .container1{
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #ffffff;
+  border-radius: 8px;
+  height: 50%;
+  width: 50%;
+} */
+
 @media (min-width: 320px) and (max-width: 480px) {
   .outerContainer {
     height: 100%;

@@ -34,14 +34,14 @@ const Input = ({ message, setMessage, sendMessage }) => {
           <textarea
             type="text"
             className="input"
-            placeholder="Type a message"
+            placeholder="Discussions here."
             value={message}
                 onChange={event => setMessage(event.target.value)}
                 onKeyPress={event => event.key === 'Enter' ? sendMessage(event) : null}
                 onKeyDown={handleKeyDown}
           />
           <span className="sendButton" onClick={sendMessage}>
-            Send 
+            Share 
           </span>
         </div>
       </form>

@@ -17,7 +17,7 @@ const http = require('http').createServer(app);
 const mongoose = require('mongoose');
 const socketio = require('socket.io')
 const io = socketio(http);
-const mongoDB = "";
+const mongoDB = "mongodb+srv://prarthanachandak:UkF3LRfaFocpjKP9@cluster0.ye7gx6o.mongodb.net/?retryWrites=true&w=majority";
 mongoose.connect(mongoDB,).then(() => console.log('database connected')).catch(err => console.log(err))
 const { addUser, getUser, removeUser } = require('./helper');
 const Message = require('./models/Message');
@@ -37,14 +37,22 @@ io.on('connection', (socket) => {
     Room.find().then(result => {
         socket.emit('output-rooms', result)
     })
-    socket.on('create-room', (roomName,link, age) => {
+    socket.on('create-room', (roomName,link, pdflink, age, domain) => {
         const room = new Room({ 
             name:roomName,
             link:link,
+            pdflink: pdflink,
             age: age,
+            domain: domain
         });
         room.save().then(result => {
             io.emit('room-created', result)
+        })
+    })
+    socket.on('rec-room', (domain, age) => {
+        Room.find({"domain": domain}).then(result => {
+            console.log("R", result);
+            socket.emit('rec-rooms', result)
         })
     })
     socket.on('join', ({ name, room_id, user_id }) => {
@@ -75,47 +83,57 @@ io.on('connection', (socket) => {
             callback()
         })
     })
-    socket.on('sendRecommends', (room_id) => {
-        Room.find().then(result=>{
-            var rooms=[],links=[],curr_room="";
-            for(let i=0;i<result.length;i++){
-                if(result[i]._id==room_id)curr_room=result[i].name;
-                rooms.push(result[i].name);
-                links.push(ytdl.getURLVideoID(result[i].link));
-            }
-            axios.put(`http://127.0.0.1:6000/category/${curr_room}`,{'rooms':rooms,'links':links})
-            .then(
-                (response)=>{
-                    var roomsData=response.data.recommendations;
-                    var recs=""
-                    for(let i=0;i<roomsData.length;i++){
-                        if(roomsData[i].name!=null){
-                            recs+=roomsData[i].name;
-                            if(i<roomsData.length-1)recs+=', '
-                        }
-                    }
-                    if(recs.length==0)recs='no recommendations for now';
-                    const msg = {
-                        name: 'recommendations',
-                        user_id: '61dc3694b010fd5369473c4a',
-                        room_id,
-                        text: recs
-                    }
-                    const recommendations = new Message(msg);
-                    io.to(room_id).emit('message', recommendations);
-                },
-                (error)=>{
-                    console.log(error);
-                }
-            )
-        });
-    })
+    // socket.on('sendRecommends', (room_id) => {
+    //     Room.find().then(result=>{
+    //         var rooms=[],links=[],curr_room="";
+    //         for(let i=0;i<result.length;i++){
+    //             if(result[i]._id==room_id)curr_room=result[i].name;
+    //             rooms.push(result[i].name);
+    //             links.push(ytdl.getURLVideoID(result[i].link));
+    //         }
+    //         axios.put(`http://192.168.0.102:5000/`)
+    //         .then(
+    //             (response)=>{
+    //                 var roomsData=response.data.recommendations;
+    //                 var recs=""
+    //                 for(let i=0;i<roomsData.length;i++){
+    //                     if(roomsData[i].name!=null){
+    //                         recs+=roomsData[i].name;
+    //                         if(i<roomsData.length-1)recs+=', '
+    //                     }
+    //                 }
+    //                 if(recs.length==0)recs='no recommendations for now';
+    //                 const msg = {
+    //                     name: 'recommendations',
+    //                     user_id: '61dc3694b010fd5369473c4a',
+    //                     room_id,
+    //                     text: recs
+    //                 }
+    //                 const recommendations = new Message(msg);
+    //                 io.to(room_id).emit('message', recommendations);
+    //             },
+    //             (error)=>{
+    //                 console.log(error);
+    //             }
+    //         )
+    //     });
+    // })
     socket.on('sendVideoUrl', (videoUrl,room_id,callback) => {
         Room.findByIdAndUpdate(room_id,{link:videoUrl},(err,docs)=>{
             if(err){
                 console.log(err);
             }else{
                 io.to(room_id).emit('display-video',videoUrl);
+                callback();
+            }
+        })
+    })
+    socket.on('sendPdfUrl', (pdfUrl,room_id,callback) => {
+        Room.findByIdAndUpdate(room_id,{pdflink:pdfUrl},(err,docs)=>{
+            if(err){
+                console.log(err);
+            }else{
+                io.to(room_id).emit('display-pdf',pdfUrl);
                 callback();
             }
         })
