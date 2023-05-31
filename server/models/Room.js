@@ -9,10 +9,6 @@ const roomSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    pdflink: {
-        type: String,
-        required: true
-    },
     age:{
         type: Number,
         required: true
@@ -20,6 +16,14 @@ const roomSchema = new mongoose.Schema({
     domain:{
         type: String,
         required: true
+    },
+    level:{
+        type: String,
+        required: true
+    },
+    rating: {
+        type: Number,
+        required: false
     }
 })
 const Room = mongoose.model('room', roomSchema);

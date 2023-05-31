@@ -6,9 +6,11 @@ import Messages from './messages/Messages';
 import InputChat from './input/InputChat';
 import InputVideoUrl from './input/InputVideoUrl';
 import InputPdfUrl from './input/InputPdfUrl';
+import StarRating from './rating/Rating';
 import './Chat.css';
 import YouTube from 'react-youtube';
 import { Document, Page, pdfjs } from 'react-pdf/dist/esm/entry.webpack';
+import RoomList from '../home/RoomList'
 // pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
  
@@ -26,17 +28,8 @@ const Chat = () => {
     const [pdfId,setPdfId]=useState('');
     const [showFirst, setShowFirst] = useState(false);
     const [showSecond, setShowSecond] = useState(false);
-
-  const handleFirstButtonClick = () => {
-    setShowFirst(true);
-    setShowSecond(false);
-  };
-
-  const handleSecondButtonClick = () => {
-    setShowFirst(false);
-    setShowSecond(true);
-    console.log(room_id);
-  };
+    const [rating, setRating] = useState(0);
+    const [similarRooms, setSimilarRooms] = useState([]);
 
     useEffect(() => {
         socket = io(ENDPT);
@@ -55,6 +48,12 @@ const Chat = () => {
         })
     }, [videoId])
     useEffect(() => {
+        socket.on('rec-similar-rooms', similarRooms => {
+            setSimilarRooms(similarRooms)
+        })
+
+    }, [])
+    useEffect(() => {
         socket.emit('get-pdfUrl', room_id)
         socket.on('display-pdf', pdflink => {
             console.log(pdflink);
@@ -69,6 +68,7 @@ const Chat = () => {
             console.log("messages are",messages);
         })
     }, [])
+
     const sendMessage = event => {
         event.preventDefault();
         if (message) {
@@ -77,8 +77,12 @@ const Chat = () => {
         }
     }
     const sendRecommends = event => {
+        setShowFirst(false);
+        setShowSecond(true);
+        console.log(room_id);
         event.preventDefault();
         socket.emit('sendRecommends', room_id);
+
     }
     const sendVideoUrl = event => {
         event.preventDefault();
@@ -102,10 +106,31 @@ const Chat = () => {
           autoplay: 0,
         },
       };
+    const handleRatingChange = (newRating) => {
+       setRating(newRating);
+       socket.emit('update-rating', room_id, newRating)
+    };
+
+    const handleFirstButtonClick = () => {
+        setShowFirst(true);
+        setShowSecond(false);
+    };
+
+    // const handleSecondButtonClick = () => {
+    //     setShowFirst(false);
+    //     setShowSecond(true);
+    //     console.log(room_id);
+    // };
+
+      
     return (
         <div className="outerContainer">
             <div className="container" >
-            <button onClick={sendRecommends}>recommend rooms</button>
+            <div>
+                <StarRating rating={rating} onRatingChange={handleRatingChange} />
+                {/* <p>Room rating: {roomRating}</p> */}
+            </div>
+            {/* <button onClick={sendRecommends}>recommend rooms</button> */}
                 <Messages messages={messages} user_id={user._id} />
                 <InputChat
                     message={message}
@@ -113,7 +138,8 @@ const Chat = () => {
                     sendMessage={sendMessage}
                 />
                 <button className="share-video" onClick={handleFirstButtonClick}>Watch Lecture</button>
-                <button className="share-video" onClick={handleSecondButtonClick}>Read Book</button>
+                {/* <button className="share-video" onClick={handleSecondButtonClick}>Read Book</button> */}
+                <button className = "share-video" onClick={sendRecommends}>Join Similar Rooms</button>
             </div>
             
             {showFirst && (
@@ -130,9 +156,8 @@ const Chat = () => {
              )}
 
             {showSecond && (
-            <div >
-                
-                <Document 
+            <div className='container'>
+                {/* <Document 
                     file={pdfUrl}
                     className="pdf-document"
                     scale={0.5}>
@@ -142,7 +167,12 @@ const Chat = () => {
                         setVideoUrl={setVideoUrl}
                         sendVideoUrl={sendPdfUrl}
                     />
-                </Document>
+                </Document> */}
+                {similarRooms.length>0 && (
+                    <div className='col s6 m5 offset-1'>
+                    <RoomList rooms={similarRooms} />
+                </div>
+                )}
             </div>
              )} 
             

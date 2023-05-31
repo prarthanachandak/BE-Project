@@ -33,28 +33,140 @@ app.get('/get-cookies', (req, res) => {
     const cookies = req.cookies;
     res.json(cookies);
 })
+// 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
 io.on('connection', (socket) => {
     Room.find().then(result => {
         socket.emit('output-rooms', result)
     })
-    socket.on('create-room', (roomName,link, pdflink, age, domain) => {
+    socket.on('create-room', (roomName,link, age, domain) => {
         const room = new Room({ 
             name:roomName,
             link:link,
-            pdflink: pdflink,
             age: age,
-            domain: domain
+            domain: domain,
+            level: "College",
         });
         room.save().then(result => {
             io.emit('room-created', result)
         })
+        dataobj = {
+            "domain": domain,
+            "age": age,
+            "reputation" : 4,
+            "Recommended chat rooms": roomName
+        }
+        axios.post('http://127.0.0.1:8000/create_room', dataobj)
+            .then(response=>{
+            })
+            .catch(error => {
+                console.error(error);
+              });  
+
     })
-    socket.on('rec-room', (domain, age) => {
-        Room.find({"domain": domain}).then(result => {
-            console.log("R", result);
-            socket.emit('rec-rooms', result)
+
+    socket.on('rec-room', (domain, age, rating) =>{
+        dataobj = {
+            "domain": domain,
+            "age": age,
+            "reputation" : rating
+        }
+        axios.post('http://127.0.0.1:8000/process_data', dataobj)
+            .then(response=>{
+                const recommendedRooms = response.data;
+                console.log("Rec", recommendedRooms);
+                try {
+                    recommendedRoomsArr = JSON.parse(recommendedRooms);
+                } catch (error) {
+                    console.error("Error occurred while parsing recommendedRooms:", error);
+                    return;
+                 }
+                Room.find({ $or: recommendedRoomsArr.map(room => ({ name: room[0], domain: room[1], age: room[2], rating: room[3] })) })
+                .then(result => {
+                    console.log("Found rooms:", result);
+                    socket.emit('rec-rooms', result)
+                })
+                .catch(err => {
+                    console.error("Error occurred while searching for rooms:", err);
+                });                  
+            })
+            .catch(error => {
+                console.error(error);
+              });            
+    })
+
+    socket.on('sendRecommends', (room_id) =>{
+        
+        Room.findById(room_id)
+        .then(room => {
+            if (room) {
+                if(room.rating && room.domain && room.age){
+                    const domain = room.domain;
+                    const age = room.age;
+                    const rating = room.rating;
+                    dataobj = {
+                        "domain": domain,
+                        "age": age,
+                        "reputation" : rating
+                    }
+                    console.log(dataobj)
+                    axios.post('http://127.0.0.1:8000/process_data', dataobj)
+                    .then(response=>{
+                        const recommendedRooms = response.data;
+                        console.log("Rec", recommendedRooms);
+                        
+                        const roomsJson = recommendedRooms.map(room => ({
+                            "name": room[0],
+                            "age": room[2],
+                            "domain": room[1],
+                            "rating": room[3]
+                          }));
+                        // socket.emit('rec-similar-rooms', recommendedRooms)
+
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        // Handle any error that occurred during the request
+                    });
+                    // Room.find(
+                    //     {"domain": domain,
+                    //     "age": { $gt: 20 }
+                    //     }).then(result => {
+                    //     socket.emit('rec-similar-rooms', result)
+                    // })
+                }
+            } else {
+            throw new Error("Room not found");
+            }
         })
+        // console.log(dataobj);
+            //   Room.find(
+            //         {"domain": domain,
+            //         "age": { $gt: 20 }
+            //         }).then(result => {
+            //             console.log(result)
+            //     })
     })
+
+    socket.on('update-rating', async (room_id, newRating) =>{
+        Room.findById(room_id)
+        .then(room => {
+            if (room) {
+                if(room.rating){
+                    const currentRating = room.rating;
+                    const updatedRating = (currentRating + newRating) / 2;
+                    room.rating = updatedRating;
+                }
+                else{
+                    room.rating = newRating;
+                }
+                return room.save();
+            
+            } else {
+            throw new Error("Room not found");
+            }
+        })
+    })      
+
     socket.on('join', ({ name, room_id, user_id }) => {
         const { error, user } = addUser({
             socket_id: socket.id,
@@ -114,9 +226,48 @@ io.on('connection', (socket) => {
             socket.emit('output-messages', result)
         });
     })
+    // socket.on('rec-room', (domain, age) => {
+    //     if(age>0 && age<10){
+    //         Room.find(
+    //             {"domain": domain,
+    //              "age": { $gt: 0, $lt: 11 }
+    //             }).then(result => {
+    //             console.log("R", result);
+    //             socket.emit('rec-rooms', result)
+    //         })
+    //     }
+    //     else if(age>=10 && age<=20){
+    //         Room.find(
+    //             {"domain": domain,
+    //              "age": { $gt: 9, $lt: 20 }
+    //             }).then(result => {
+    //             console.log("R", result);
+    //             socket.emit('rec-rooms', result)
+    //         })
+    //     }
+    //     else if(age>20 && age<=25){
+    //         Room.find(
+    //             {"domain": domain,
+    //              "age": { $gt: 20, $lt: 26 }
+    //             }).then(result => {
+    //             console.log("R", result);
+    //             socket.emit('rec-rooms', result)
+    //         })
+    //     }
+    //     else{
+    //         Room.find(
+    //             {"domain": domain,
+    //              "age": { $gt: 20 }
+    //             }).then(result => {
+    //             console.log("R", result);
+    //             socket.emit('rec-rooms', result)
+    //         })
+    //     }
+    // })
     socket.on('disconnect', () => {
         const user = removeUser(socket.id);
     })
+
 });
 
 http.listen(PORT, () => {

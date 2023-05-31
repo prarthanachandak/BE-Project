@@ -12,11 +12,11 @@ const Home = () => {
     const [rooms, setRooms] = useState([]);
     const [recRooms, setRecRooms] = useState([]);
     const [link, setLink] = useState([]);
-    const [pdflink, setpdfLink] = useState([]);
     const[age, setAge] = useState([]);
     const[domain, setDomain] = useState([]);
     const[recAge, setRecAge] = useState([]);
     const[recDomain, setRecDomain] = useState([]);
+    const[recRating, setRecRating] = useState([]);
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     const ENDPT = '127.0.0.1:5000';
@@ -50,19 +50,19 @@ const Home = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        socket.emit('create-room',room,link,pdflink, age, domain);
-        console.log(room,link, age);
+        socket.emit('create-room',room,link, age, domain);
+        console.log(room,link, age, domain);
         setRoom('');
         setLink('');
-        setpdfLink('');
         setAge('');
         setDomain('');
     }
     const handleRecommendations = e =>{
         e.preventDefault();
-        socket.emit('rec-room', recDomain, recAge);
+        socket.emit('rec-room', recDomain, recAge, recRating);
         setRecAge('');
         setRecDomain('');
+        setRecRating('');
         console.log(recRooms);
     }
     const handleToggleCollapse = () => {
@@ -100,18 +100,12 @@ const Home = () => {
                                             id="domain" type="text" className="validate"
                                             value={domain}
                                             onChange={e => setDomain(e.target.value)}
-                                        />                                          
+                                        />                                           
                                         <input
                                             placeholder="Enter lecture link"
                                             id="link" type="text" className="validate"
                                             value={link}
                                             onChange={e => setLink(e.target.value)}
-                                        />
-                                        <input
-                                            placeholder="Enter book link"
-                                            id="pdflink" type="text" className="validate"
-                                            value={pdflink}
-                                            onChange={e => setpdfLink(e.target.value)}
                                         />
                                     </div>
                                 </div>
@@ -141,7 +135,13 @@ const Home = () => {
                                             id="recage" type="number" className="validate"
                                             value={recAge}
                                             onChange={e => setRecAge(e.target.value)}
-                                        />                                                                                 
+                                        />
+                                        <input
+                                            placeholder="Enter reputation (out of 5)"
+                                            id="recrating" type="number" className="validate"
+                                            value={recRating}
+                                            onChange={e => setRecRating(e.target.value)}
+                                        />                                                                                  
                                     </div>
                                 </div>
                                 <button className="btn">Get Recommendations</button>
@@ -158,9 +158,16 @@ const Home = () => {
                     <RoomList rooms={rooms} />
                 </div>
                 <button>Recommended Rooms</button>
-                <div className='col s6 m5 offset-1'>
+                {recRooms.length>0 && (
+                    <div className='col s6 m5 offset-1'>
                     <RoomList rooms={recRooms} />
                 </div>
+                )}
+                {recRooms.length==0 && (
+                    <span>No Rooms Available!</span>
+                )}
+
+                
             </div>
 
         </div>
