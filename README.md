@@ -1,7 +1,6 @@
 # BE-Project
-npm install - on server and client
-start client using 
-npm start
-
-start server using
-nodemon index
+npm install (server and client)
+ 
+for client - npm start
+for server - nodemon index
+for recommendation-api - python3 a.py
