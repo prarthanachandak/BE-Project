@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { UserContext } from '../../UserContext';
 import { Redirect } from 'react-router-dom';
+import "./Auth.css";
 const Login = () => {
     const { user, setUser } = useContext(UserContext);
 
@@ -67,7 +68,7 @@ const Login = () => {
                     </div>
                 </div>
 
-                <button className="btn">Login</button>
+                <button className="auth-button">Login</button>
             </form>
         </div>
 

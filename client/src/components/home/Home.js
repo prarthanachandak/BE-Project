@@ -91,16 +91,15 @@ const Home = () => {
   return (
     <div>
       <div className="row">
-        <div className="col s12 m6">
-          <div className="card blue-grey darken-1">
-            <div className="card-content white-text">
-              <span className="card-title">
+        <div className="col s10 m6">
+          <div className="card form-css">
+            <div className="card-content create-room-card">
+              <span className="title">
                 Welcome {user ? user.name : ""}
               </span>
               <form onSubmit={handleSubmit}>
                 <div className="row">
                   <div className="input-field col s12">
-                    <label>Study Room</label>
                     <input
                       placeholder="Enter a Study Room name"
                       id="room"
@@ -135,21 +134,20 @@ const Home = () => {
                     />
                   </div>
                 </div>
-                <button className="btn">Create Study Room</button>
+                <button className="create-room-button">Create Study Room</button>
               </form>
             </div>
             <div className="card-action"></div>
           </div>
 
-          <div className="card blue-grey darken-1">
-            <div className="card-content white-text">
-              <span className="card-title">
+          <div className="card form-css">
+            <div className="card-content create-room-card">
+              <span className="title">
                 Get Personalized Room Recommendations
               </span>
               <form onSubmit={handleRecommendations}>
                 <div className="row">
                   <div className="input-field col s12">
-                    <label>Study Room</label>
                     <input
                       placeholder="Enter domain of study"
                       id="recdomain"
@@ -176,15 +174,24 @@ const Home = () => {
                     />
                   </div>
                 </div>
-                <button className="btn">Get Recommendations</button>
+                <button className="create-room-button">Get Recommendations</button>
               </form>
             </div>
             <div className="card-action"></div>
           </div>
         </div>
+        <div class="buttons">
         <button className="room-buttons" onClick={handleToggleCollapse}>
           All Rooms
         </button>
+        <button
+          className="room-buttons"
+          onClick={handleRecommendationCollapse}
+        >
+          Recommended Rooms
+        </button>
+        </div>
+        
         { !isCollapsed && (<div
           className={
             isCollapsed
@@ -195,12 +202,7 @@ const Home = () => {
           <RoomList rooms={rooms} />
         </div>)
         }
-        <button
-          className="room-buttons"
-          onClick={handleRecommendationCollapse}
-        >
-          Recommended Rooms
-        </button>
+       
           {(recRooms.length && !risCollapsed) > 0 && (
             <div className="col s6 m5 offset-1">
               <RoomList rooms={recRooms} />
