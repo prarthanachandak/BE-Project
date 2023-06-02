@@ -8,3 +8,24 @@
     height: auto;
     transition: height 0.3s ease-in;
   }
+
+  .room-buttons {
+    color: white !important;
+    font-weight: bold;
+    background-color: #33691e;
+    margin: 10px 10px 10px 10px;
+    padding: 20px;
+    border-radius: 20px;
+    border:none;
+  }
+  .room-buttons:hover{
+    cursor: pointer;
+    background: #689f38;
+  }
+  .room-buttons:focus{
+    background-color: #8BC34A;
+    color: #33691e
+  }
+  .empty-list{
+    justify-content: start;
+  }

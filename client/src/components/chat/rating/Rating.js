@@ -41,7 +41,7 @@ const StarRating = ({ rating, onRatingChange }) => {
   };
 
   return (
-    <div ref={starRatingRef} className="star-rating" style={{ display: 'inline-block' }}>
+    <div ref={starRatingRef} className="star-rating" style={{ display: 'inline-block', cursor:"pointer" }}>
       {renderStars()}
     </div>
   );
