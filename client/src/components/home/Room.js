@@ -21,7 +21,7 @@ const Room = ({ room }) => {
             <li style={{color:"white", fontWeight:"bold"}}>Room Name: {room.name}</li>
             <li style={{color:"white", fontWeight:"bold"}}>Age Group: {room.age} </li>
             <li style={{color:"white", fontWeight:"bold"}}>Room Domain: {room.domain}</li>
-            <li style={{color:"white", fontWeight:"bold"}}>Room Rating: {Math.round(room.rating)}</li>
+            <li style={{color:"white", fontWeight:"bold"}}>Room Rating: {room.rating.toFixed(1)}</li>
          </ul>
         </div>
       )}

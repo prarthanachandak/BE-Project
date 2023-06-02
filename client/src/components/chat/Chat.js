@@ -99,7 +99,7 @@ const Chat = () => {
   useEffect(() => {
     socket.emit("get-room-rating", room_id);
     socket.on("display-rating", (rating) => {
-      setRoomRating(Math.round(rating));
+      setRoomRating(rating.toFixed(1));
       console.log("room_name", rating);
     });
   });
