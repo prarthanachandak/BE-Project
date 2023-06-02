@@ -1,10 +1,81 @@
 .collapsed {
-    height: 0;
-    overflow: hidden;
-    transition: height 0.3s ease-out;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.3s ease-out;
+}
+
+.expanded {
+  height: auto;
+  transition: height 0.3s ease-in;
+}
+
+.room-buttons {
+  color: white !important;
+  font-weight: bold;
+  background-color: #33691e;
+  margin: 10px 10px 10px 10px;
+  padding: 20px;
+  border-radius: 20px;
+  border: none;
+}
+.room-buttons:hover {
+  cursor: pointer;
+  background: #689f38;
+}
+.room-buttons:focus {
+  background-color: #8bc34a;
+  color: #33691e;
+}
+.empty-list {
+  justify-content: start;
+}
+
+.form-css {
+  margin-top: 20px;
+  margin-bottom:20px;
+  background: #9ccc65;
+  border-radius: 20px;
+  padding: 10px;
+  .title {
+    font-family: "Raleway";
+    font-style: normal;
+    font-weight: bolder;
+    font-size: 34px;
+    color: #33691E;
+    line-height: 66px;
+    text-align: center;
   }
-  
-  .expanded {
-    height: auto;
-    transition: height 0.3s ease-in;
-  }
+}
+.validate{
+  color: #33691E;
+  font-size: 17px;
+  font-weight: 500;
+}
+.validate::placeholder{
+  color: #33691E;
+  font-size: 17px;
+  font-weight: 500;
+}
+input{
+  background: #9ccc65;
+  outline-color: #33691E;
+}
+.create-room-button{
+  color: white !important;
+  font-weight: bold;
+  background-color: #33691e;
+  margin: 10px 10px 10px 10px;
+  padding: 20px;
+  border-radius: 20px;
+  border: none;
+}
+.create-room-button:hover{
+  cursor: pointer;
+  background: #689f38;
+}
+
+.buttons{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}

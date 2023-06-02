@@ -1,18 +1,36 @@
-import React from 'react'
-const Room = ({ name }) => {
-    return (
+import React, { useState } from "react";
 
-        <div className="card horizontal">
+const Room = ({ room }) => {
+  const [isHovered, setIsHovered] = useState(false);
 
-            <div className="card-stacked">
-                <div className="card-content">
-                    <p>{name}</p>
-                </div>
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
 
-            </div>
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+  return (
+    <div className="card horizontal center">
+      <div className="card-stacked room-card" style={{background: "#33691E",}}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+>     {isHovered && (
+        <div className="info-box">
+         <ul>
+            <li style={{color:"white", fontWeight:"bold"}}>Room Name: {room.name}</li>
+            <li style={{color:"white", fontWeight:"bold"}}>Age Group: {room.age} </li>
+            <li style={{color:"white", fontWeight:"bold"}}>Room Domain: {room.domain}</li>
+            <li style={{color:"white", fontWeight:"bold"}}>Room Rating: {Math.round(room.rating)}</li>
+         </ul>
         </div>
+      )}
+        <div className="card-content">
+          <p style={{color:"white", fontWeight:"bold", borderRadius:"20px"}}>{!isHovered?room.name:<span></span>}</p>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-    )
-}
-
-export default Room
+export default Room;

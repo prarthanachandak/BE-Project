@@ -26,7 +26,7 @@ const Input = ({ message, setMessage, sendMessage }) => {
         }
       };
   return (
-    <div>
+    <div class="input-chat">
       <form action="#" className="form">
         {/* <button className="share-video" onClick={null}>Read Book</button>
         <button className="share-video" onClick={null}>Watch Lecture</button> */}

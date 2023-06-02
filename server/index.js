@@ -226,6 +226,30 @@ io.on('connection', (socket) => {
             socket.emit('output-messages', result)
         });
     })
+    socket.on('get-room-name', room_id =>{
+        Room.find({"_id":room_id}).then(result =>{
+            result = result[0].name;
+            socket.emit("display-name",result);
+        })
+    })
+    socket.on('get-room-rating', room_id =>{
+        Room.find({"_id":room_id}).then(result =>{
+            result = result[0].rating;
+            socket.emit("display-rating",result);
+        })
+    })
+    socket.on('get-room-age', room_id =>{
+        Room.find({"_id":room_id}).then(result =>{
+            result = result[0].age;
+            socket.emit("display-age",result);
+        })
+    })
+    socket.on('get-room-domain', room_id =>{
+        Room.find({"_id":room_id}).then(result =>{
+            result = result[0].domain;
+            socket.emit("display-domain",result);
+        })
+    })
     // socket.on('rec-room', (domain, age) => {
     //     if(age>0 && age<10){
     //         Room.find(

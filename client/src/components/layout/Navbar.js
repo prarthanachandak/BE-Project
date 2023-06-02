@@ -21,13 +21,13 @@ const Navbar = () => {
     const menu = user ? <SignedInMenu logout={logout} /> : <SignedOutMenu />
     return (
         <>
-            <nav className="green">
+            <nav className="light-green">
                 <div className="nav-wrapper">
-                    <a href="/" className="brand-logo">Virtual Study Rooms</a>
+                    <a href="/" className="brand-logo center" style={{color:"#33691E", fontWeight:"bold"}}>Virtual Study Rooms</a>
                     <a href="#" data-target="mobile-demo" className="sidenav-trigger"><i className="material-icons">menu</i></a>
 
 
-                    <ul id="nav-mobile" className="right hide-on-med-and-down">
+                    <ul id="nav-mobile" className="right hide-on-med-and-down" style={{color:"#33691E", fontWeight:"bold"}}>
                         {menu}
 
                     </ul>

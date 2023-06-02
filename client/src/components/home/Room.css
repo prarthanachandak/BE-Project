@@ -1,0 +1,20 @@
+.room-card{
+  position: relative;
+  width: 200px;
+  height: 150px;
+  border: 20px solid #ccc;
+  padding: 10px;
+  background: #9CCC65;
+}
+.info-box {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: gray;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  /* Add other styles for the information box */
+}
